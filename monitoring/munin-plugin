@@ -1,0 +1,12 @@
+#!/bin/sh
+
+scriptname=${0##*/}
+MODULE=${scriptname##*_}
+
+case $1 in
+   config)
+        curl -s ${monitorUrl}/$MODULE?output=munin-config
+        exit 0;;
+esac
+
+curl -s ${monitorUrl}/$MODULE?output=munin-values
