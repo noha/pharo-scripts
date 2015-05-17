@@ -1,12 +1,26 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+# The script provides an adaption for munin to the pharo monitoring tools.
+# 
+# The monitorUrl environment variable is provided by munin. It needs to be
+# configured in the plugin-conf.d/ directory to match the plugin name this
+# script is referenced as
+
+# extract the suffix of a multi plugin. A multi plugin is a plugin ending
+# or containing an underscore. The suffix is extracted and is used to 
+# match against a parameter group in the monitoring tools
 
 scriptname=${0##*/}
 MODULE=${scriptname##*_}
 
+# if the script is called with a parameter config the script should return
+# configuration for the graph to display
 case $1 in
    config)
         curl -s ${monitorUrl}/$MODULE?output=munin-config
         exit 0;;
 esac
 
+# if the script is called without parameter munin expects the corresponding 
+# values for the graph
 curl -s ${monitorUrl}/$MODULE?output=munin-values

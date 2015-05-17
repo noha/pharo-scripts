@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# This script adapts a nagios plugin to the pharo monitoring tools.
+
+# The script needs two arguments
+#
+# baseuri    The base uri of the pharo monitoring tools
+# module     The name of the parameter group defined in pharo monitoring tools
+while [[ $# > 1 ]]
+do
+    key="$1"
+    case $1 in
+        -u|--baseuri)
+        BASEURI="$2"
+        shift
+        ;;
+        -m|--module)
+        MODULE="$2"
+        shift
+        ;;
+        *)
+                # unknown option
+        ;;
+    esac
+    shift
+done
+
+# Read the nagios format. The first line contains the status (ok, warning or critical). All 
+# subsequent lines form a message that is to be displayed by a nagios compliant tool
+
+FIRST=1
+IFS=$'\n'
+
+for i in $(curl -s ${BASEURI}/$MODULE?output=npe); 
+do 
+    if [ "$FIRST" == "1" ]; 
+    then
+        STATUS_TEXT=$i
+        FIRST=0
+    else
+        echo $i
+    fi
+done 
+
+case $STATUS_TEXT in
+    'ok') exit 0;;
+    'warning') exit 1;;
+    'critical') exit 2;;
+esac
+
+# it didn't work the way we expect it so throw unknown
+exit 3
