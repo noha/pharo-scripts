@@ -3,4 +3,4 @@ This is a collection of helper scripts to ease the use of pharo in a linux envir
 monitoring
 -------------
 
-These scripts adapt the [pharo monitoring tools](http://smalltalkhub.com/#!/~NorbertHartl/Monitoring) to monitoring services
+These scripts adapt the <a href="http://smalltalkhub.com/#!/~NorbertHartl/Monitoring">pharo monitoring tools</a> to monitoring services
